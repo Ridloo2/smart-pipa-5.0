@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1724">
+  <meta name="description" content="SMART PIPA 5.0 — prototipe dashboard simulasi pemantauan kebocoran pipa industri.">
+  <title>SMART PIPA 5.0 | Pipeline Monitor</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview" aria-label="SMART PIPA beranda">
+        <span class="brand-mark"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 12h12v8H8zM28 28h12v8H28zM20 16h8v16h-8z" fill="currentColor"/><path d="M8 16v16h12M28 16h12v16" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+        <span><strong>SMART PIPA <b>5.0</b></strong><small>INDUSTRIAL MONITOR</small></span>
+      </a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="nav">
+        <a class="nav-link active" href="#overview"><span>◫</span> Ringkasan</a>
+        <a class="nav-link" href="#pipeline"><span>⌁</span> Peta Pipa</a>
+        <a class="nav-link" href="#analytics"><span>⌁</span> Analitik Sensor</a>
+        <a class="nav-link" href="#events"><span>≡</span> Riwayat Kejadian</a>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="system-card">
+        <span class="pulse-dot"></span>
+        <div><strong>Mode demonstrasi</strong><small>Data simulasi aktif</small></div>
+      </div>
+      <div class="sidebar-foot">SMART PIPA 5.0 <span>PROTOTIPE v1.0</span></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn mobile-menu" id="menuToggle" aria-label="Buka menu">☰</button>
+        <div class="breadcrumbs">Sistem / <strong>Ringkasan</strong></div>
+        <div class="top-actions">
+          <span class="demo-tag"><span class="pulse-dot"></span> SIMULASI</span>
+          <button class="icon-btn" id="soundToggle" aria-label="Aktifkan atau matikan suara" title="Suara alarm">♫</button>
+          <div class="avatar">SP</div>
+        </div>
+      </header>
+
+      <section class="page-content" id="overview">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow">INDUSTRIAL PIPELINE INTELLIGENCE</div>
+            <h1>Monitoring <span>Dashboard</span></h1>
+            <p>Pantau kondisi jaringan pipa dan uji respons sistem dalam satu tempat.</p>
+          </div>
+          <div class="heading-actions">
+            <span class="live-time"><span class="pulse-dot"></span><span id="clock">--:--:--</span></span>
+            <button class="btn btn-secondary" id="resetBtn">↻ <span>Reset simulasi</span></button>
+          </div>
+        </div>
+
+        <div class="notice" role="note"><span class="notice-icon">i</span><div><strong>Lingkungan simulasi</strong><p>Nilai sensor dan respons katup adalah data demonstrasi, bukan pengukuran dari pipa industri nyata.</p></div><button id="dismissNotice" aria-label="Tutup informasi">×</button></div>
+
+        <div class="status-banner normal" id="statusBanner" role="status" aria-live="polite">
+          <div class="status-symbol" id="statusSymbol">✓</div>
+          <div class="status-copy"><strong id="statusTitle">Semua sistem beroperasi normal</strong><span id="statusDescription">Tidak ada anomali yang terdeteksi pada simulasi.</span></div>
+          <div class="status-right"><span class="status-label" id="statusLabel">NORMAL</span><small id="lastUpdate">Pembaruan baru saja</small></div>
+        </div>
+
+        <div class="section-title"><div><h2>Ikhtisar sistem</h2><p>Metrik utama jaringan pipa</p></div><span class="section-kicker">DEMO / 01</span></div>
+        <div class="metric-grid">
+          <article class="metric-card"><div class="metric-top"><span>Debit masuk</span><span class="metric-icon cyan">↘</span></div><div class="metric-value"><span id="flowValue">24.0</span><small> L/menit</small></div><div class="metric-foot"><span class="mini-indicator"></span> Aliran simulasi</div></article>
+          <article class="metric-card"><div class="metric-top"><span>Tekanan pipa</span><span class="metric-icon blue">◉</span></div><div class="metric-value"><span id="pressureValue">2.8</span><small> bar</small></div><div class="metric-foot"><span class="mini-indicator"></span> Tekanan simulasi</div></article>
+          <article class="metric-card"><div class="metric-top"><span>Air terbuang</span><span class="metric-icon amber">↗</span></div><div class="metric-value"><span id="wasteValue">0.0</span><small> liter</small></div><div class="metric-foot"><span id="wasteFoot">Belum ada kehilangan</span></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Status katup</span><span class="metric-icon violet">⦿</span></div><div class="metric-value word-value" id="valveValue">TERBUKA</div><div class="metric-foot"><span class="mini-indicator" id="valveIndicator"></span><span id="valveFoot">Aliran diizinkan</span></div></article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel pipeline-panel" id="pipeline">
+            <div class="panel-heading"><div><h2>Visualisasi jaringan pipa</h2><p>Jalur utama · Unit produksi A-01</p></div><span class="tiny-chip">LIVE DEMO</span></div>
+            <div class="pipe-stage">
+              <div class="pipe-unit tank"><span class="unit-icon">▤</span><small>SUMBER</small><strong>Tangki A</strong></div>
+              <div class="pipe-line"><span class="water-flow"></span><span class="sensor-node sensor-one"><i></i></span><span class="sensor-node sensor-two"><i></i></span><span class="leak-marker" id="leakMarker">!</span><span class="pipe-label label-one">S-01</span><span class="pipe-label label-two">S-02</span></div>
+              <div class="pipe-unit factory"><span class="unit-icon">▥</span><small>OUTPUT</small><strong>Unit B</strong></div>
+              <div class="pipe-legend"><span><i class="legend-normal"></i> Jalur pipa</span><span><i class="legend-sensor"></i> Sensor</span><span><i class="legend-leak"></i> Titik kebocoran</span></div>
+            </div>
+            <div class="pipe-details">
+              <div><span>Kondisi jalur</span><strong id="pipeCondition">Stabil</strong></div>
+              <div><span>Sensor aktif</span><strong>02 / 02</strong></div>
+              <div><span>Katup utama</span><strong id="pipeValve">Terbuka</strong></div>
+            </div>
+          </section>
+
+          <section class="panel control-panel">
+            <div class="panel-heading"><div><h2>Kontrol simulasi</h2><p>Jalankan skenario untuk demonstrasi</p></div><span class="control-icon">⌘</span></div>
+            <div class="scenario-copy"><span class="scenario-label">SKENARIO</span><strong id="scenarioTitle">Kondisi normal</strong><p id="scenarioText">Aliran stabil. Belum ada kebocoran pada sistem simulasi.</p></div>
+            <button class="btn btn-danger btn-full" id="leakBtn"><span>⚠</span> Simulasikan kebocoran</button>
+            <button class="btn btn-secondary btn-full" id="valveBtn">▣ <span>Tutup katup manual</span></button>
+            <button class="btn btn-quiet btn-full" id="alarmBtn">♫ <span>Uji alarm</span></button>
+            <p class="control-hint">Tombol ini mengubah simulasi pada browser, bukan perangkat fisik.</p>
+          </section>
+        </div>
+
+        <div class="section-title section-spaced" id="analytics"><div><h2>Analitik sensor</h2><p>Tren data simulasi dari waktu ke waktu</p></div><span class="section-kicker">DEMO / 02</span></div>
+        <div class="chart-grid">
+          <section class="panel chart-panel"><div class="panel-heading"><div><h2>Debit aliran</h2><p>Liter per menit</p></div><span class="chart-value"><strong id="chartFlowNow">24.0</strong><small> L/min</small></span></div><div class="chart-wrap"><canvas id="flowChart" aria-label="Grafik debit aliran simulasi"></canvas></div></section>
+          <section class="panel chart-panel"><div class="panel-heading"><div><h2>Tekanan pipa</h2><p>Bar</p></div><span class="chart-value"><strong id="chartPressureNow">2.8</strong><small> bar</small></span></div><div class="chart-wrap"><canvas id="pressureChart" aria-label="Grafik tekanan pipa simulasi"></canvas></div></section>
+        </div>
+
+        <section class="panel events-panel" id="events">
+          <div class="panel-heading"><div><h2>Riwayat kejadian</h2><p>Aktivitas simulasi terbaru</p></div><button class="btn btn-quiet btn-small" id="clearHistoryBtn">Hapus riwayat</button></div>
+          <div class="table-wrap"><table><thead><tr><th>WAKTU</th><th>KEJADIAN</th><th>DETAIL</th><th>STATUS</th></tr></thead><tbody id="eventRows"></tbody></table></div>
+          <div class="empty-state" id="emptyEvents" hidden>Belum ada kejadian. Jalankan simulasi untuk membuat riwayat.</div>
+        </section>
+
+        <footer class="footer"><div><strong>SMART PIPA 5.0</strong><span>Prototype monitoring system</span></div><p>Dibuat untuk demonstrasi konsep deteksi dini kebocoran pipa industri.</p><span class="footer-version">v1.0.0 · DATA SIMULASI</span></footer>
+      </section>
+    </main>
+  </div>
+  <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
